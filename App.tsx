@@ -713,6 +713,8 @@ const App: React.FC = () => {
                        newSlides.push({
                            id: slideCounter++,
                            ...result,
+                           imageUrl: null,
+                           originalImage: base64,
                            status: 'PENDING'
                        });
                   }
@@ -728,6 +730,8 @@ const App: React.FC = () => {
                   newSlides.push({
                       id: slideCounter++,
                       ...result,
+                      imageUrl: null,
+                      originalImage: base64,
                       status: 'PENDING'
                   });
               }
