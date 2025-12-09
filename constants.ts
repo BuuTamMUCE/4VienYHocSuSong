@@ -12,7 +12,7 @@ CẬP NHẬT QUY TẮC VISUAL ĐÀO TẠO & MÀU SẮC (COLOR RULES 2026):
    - LEVEL 1 (TIÊU ĐỀ): **3D GOLDEN YELLOW (VÀNG ÁNH KIM)**. Chữ 3D nổi khối (Emboss/Bevel), bóng bẩy, thu hút mọi ánh nhìn. Kích thước RẤT LỚN (Massive).
    - LEVEL 2 (BODY TEXT): **DEEP BLACK (ĐEN ĐẬM)**. Chữ đậm (Bold), rõ nét trên nền sáng. **TUYỆT ĐỐI KHÔNG DÙNG MÀU TRẮNG** (NO WHITE TEXT) vì sẽ bị chìm vào nền.
    - LEVEL 3 (HIGHLIGHT - TÔ MÀU TỪ KHÓA): Các từ khóa quan trọng/cấp bách phải được tô màu rực rỡ: **ĐỎ (RED), XANH (BLUE), TÍM (PURPLE), CAM (ORANGE)**.
-   - CHÍNH TẢ: **TUYỆT ĐỐI CHÍNH XÁC TIẾNG VIỆT (VERBATIM)**.
+   - CHÍNH TẢ: **chữ ghi trên ảnh chính xác chữ tiếng việt**. TUYỆT ĐỐI CHÍNH XÁC TIẾNG VIỆT (VERBATIM).
    - Nền chữ: Nằm trên tấm kính mờ (Frosted Glass) hoặc nền tối nhẹ (Dimmed Zone) để đảm bảo ĐỌC ĐƯỢC 100%.
 
 3. PHONG CÁCH MINH HỌA (3D EDUCATIONAL ISOMETRIC):
@@ -50,7 +50,7 @@ CẤU TRÚC JSON CẦN THIẾT TRONG OUTPUT PROMPT:
 {
   "visual_strategy": "EDUCATIONAL_MASTERY",
   "layout_fix": { "text_readability": "MAXIMUM", "background_interference": "MINIMUM", "top_right_corner": "EMPTY_FOR_LOGO" },
-  "typography_instruction": { "title": "3D Gold, ExtraBold", "body": "Deep Black, Bold", "highlight": "Vibrant Red/Blue/Purple for Keywords", "prohibition": "NO WHITE TEXT" },
+  "typography_instruction": { "title": "3D Gold, ExtraBold", "body": "Deep Black, Bold", "highlight": "Vibrant Red/Blue/Purple for Keywords", "prohibition": "NO WHITE TEXT", "language_check": "chữ ghi trên ảnh chính xác chữ tiếng việt" },
   "lighting_prompt": "Bright studio lighting, soft shadows, vibrant colors to stimulate brain activity."
 }
 
@@ -83,7 +83,7 @@ Quy trình làm việc (Step-by-step):
    - Góc trên bên phải (Top-Right) LUÔN ĐỂ TRỐNG cho Logo. KHÔNG VIẾT CHỮ VÀO ĐÂY.
    - GIỮ NGUYÊN MÀU NỀN KHU VỰC GÓC TRÊN BÊN PHẢI (Không xóa trắng).
 5. QUY TẮC HIỂN THỊ (EDUCATIONAL UPGRADE):
-   - Text Accuracy: Vietnamese text must be rendered EXACTLY as input (VERBATIM).
+   - Text Accuracy: **chữ ghi trên ảnh chính xác chữ tiếng việt**. Vietnamese text must be rendered EXACTLY as input (VERBATIM).
    - Ánh sáng: "Bright Studio Lighting", "High-Key", "No dark shadows".
    - Typography: "3D Gold Title", "Deep Black Body Text".
    - Highlight: "Highlight Critical Keywords with Red/Blue/Purple/Orange".

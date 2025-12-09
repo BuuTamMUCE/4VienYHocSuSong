@@ -774,12 +774,13 @@ const App: React.FC = () => {
       // STEEL COMMAND: Enforce specific colors regardless of UI choice if needed, 
       // but respecting the "Style" variables for user flexibility.
       // HOWEVER, based on user request, we enforce "Gold Title" and "Black Body" strongly.
+      // UPDATED: Added "chữ ghi trên ảnh chính xác chữ tiếng việt" as strictly requested before content.
       
       const colorInstruction = `STRICT TEXT COLOR & RENDER RULES (LUẬT THÉP):
       1. **TITLE (TIÊU ĐỀ)**: MUST be 3D GOLDEN YELLOW (Vàng Ánh Kim), Massive 3D Block Letters, Glossy/Shiny finish. High Contrast.
       2. **BODY TEXT (NỘI DUNG)**: MUST be DEEP BLACK (Đen Đậm), Bold, and Sharp. **ABSOLUTELY NO WHITE TEXT**.
       3. **HIGHLIGHTS**: Automatically colorize KEYWORDS based on urgency/importance: RED (Critical), BLUE (Trust), PURPLE (Wisdom), ORANGE (Action).
-      4. **VIETNAMESE TEXT ACCURACY**: TEXT MUST BE RENDERED EXACTLY AS PROVIDED (VERBATIM). NO SPELLING ERRORS.
+      4. **VIETNAMESE TEXT ACCURACY**: chữ ghi trên ảnh chính xác chữ tiếng việt. TEXT MUST BE RENDERED EXACTLY AS PROVIDED (VERBATIM). NO SPELLING ERRORS. NO TRANSLATION.
       5. **VISUALS**: 3D Eco-style elements, Water/Nature theme.
       `;
       
