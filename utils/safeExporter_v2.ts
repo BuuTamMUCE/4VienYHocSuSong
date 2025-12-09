@@ -9,7 +9,7 @@ declare const saveAs: any;
 // Updated with Layout Rule: Empty Top-Right Corner for Logo, Preserve Background
 // Updated with Educational Rules: Highlight Keywords, Bold Body, 3D Simulation
 // Updated with Text Accuracy Rule: Render Vietnamese text EXACTLY
-const HQ_STYLE_SUFFIX = " . High-Key Lighting, Bright Studio Lights, 3D Eco-style, Hyper-realistic, 8k Resolution. TEXT RENDER: Massive 3D GOLD Title, DEEP BLACK Body Text. HIGHLIGHT KEYWORDS (Red/Blue/Purple). 3D MEMORABLE SIMULATION included. LAYOUT: Top-Right Corner EMPTY for Logo. TEXT ACCURACY: chữ ghi trên ảnh chính xác chữ tiếng việt. RENDER VIETNAMESE TEXT EXACTLY AS PROVIDED.";
+const HQ_STYLE_SUFFIX = ' { "visual_strategy": "EDUCATIONAL_MASTERY", "layout_fix": { "text_readability": "MAXIMUM", "background_interference": "MINIMUM", "top_right_corner is NO TEXT AND THE SAME BACKGROUND COLOR" }, "typography_instruction": { "title": "3D Gold, ExtraBold", "body": "Deep Black, Bold", "highlight": " for Keywords color", "prohibition": "NO WHITE TEXT", "language_check": "chữ ghi trên ảnh chính xác chữ tiếng việt" }, "lighting_prompt": "Bright studio lighting, soft shadows." } . High-Key Lighting, Bright Studio Lights, 3D Eco-style, Hyper-realistic, 8k Resolution. TEXT RENDER: Massive 3D GOLD Title, DEEP BLACK Body Text. RENDER VIETNAMESE TEXT EXACTLY AS PROVIDED.';
 
 /**
  * SAFE EXPORTER V2 - SEQUENTIAL PROCESSING MODULE

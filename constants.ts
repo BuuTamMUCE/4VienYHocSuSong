@@ -1,96 +1,37 @@
 
 
 export const REFERENCE_PROMPT = `
-“Thiết kế một infographic ĐÀO TẠO/GIÁO DỤC (EDUCATIONAL VISUAL) hiện đại theo phong cách sinh thái – năng lượng nước, với tông màu chủ đạo: xanh ngọc trong, xanh dương mềm, vàng kim ánh sáng neon nhẹ.
-
-CẬP NHẬT QUY TẮC VISUAL ĐÀO TẠO & MÀU SẮC (COLOR RULES 2026):
-1. ÁNH SÁNG & KHÔNG KHÍ (MOOD & LIGHTING) - QUAN TRỌNG:
-   - BẮT BUỘC: High-Key Lighting (Ánh sáng cường độ cao), rực rỡ, tích cực, không có vùng tối (shadows) làm che khuất nội dung.
-   - BẦU KHÔNG KHÍ: Kích thích tư duy, năng lượng, trong trẻo.
-
-2. PHÂN CẤP THÔNG TIN & MÀU SẮC (TYPOGRAPHY & COLOR - LUẬT THÉP):
-   - LEVEL 1 (TIÊU ĐỀ): **3D GOLDEN YELLOW (VÀNG ÁNH KIM)**. Chữ 3D nổi khối (Emboss/Bevel), bóng bẩy, thu hút mọi ánh nhìn. Kích thước RẤT LỚN (Massive).
-   - LEVEL 2 (BODY TEXT): **DEEP BLACK (ĐEN ĐẬM)**. Chữ đậm (Bold), rõ nét trên nền sáng. **TUYỆT ĐỐI KHÔNG DÙNG MÀU TRẮNG** (NO WHITE TEXT) vì sẽ bị chìm vào nền.
-   - LEVEL 3 (HIGHLIGHT - TÔ MÀU TỪ KHÓA): Các từ khóa quan trọng/cấp bách phải được tô màu rực rỡ: **ĐỎ (RED), XANH (BLUE), TÍM (PURPLE), CAM (ORANGE)**.
-   - CHÍNH TẢ: **chữ ghi trên ảnh chính xác chữ tiếng việt**. TUYỆT ĐỐI CHÍNH XÁC TIẾNG VIỆT (VERBATIM).
-   - Nền chữ: Nằm trên tấm kính mờ (Frosted Glass) hoặc nền tối nhẹ (Dimmed Zone) để đảm bảo ĐỌC ĐƯỢC 100%.
-
-3. PHONG CÁCH MINH HỌA (3D EDUCATIONAL ISOMETRIC):
-   - BẮT BUỘC: MÔ PHỎNG 3D DỄ NHỚ (3D MEMORABLE SIMULATION).
-   - Vật thể 3D: Biểu cảm tích cực, mô hình giải phẫu/khoa học/kỹ thuật chi tiết, bóng bẩy (Glossy).
-   - Bố cục: Cân bằng động (Dynamic Balance), dẫn dắt mắt người xem.
-
-QUY TRÌNH XÂY DỰNG BỐ CỤC & MÔ PHỎNG 3D (STEP-BY-STEP MASTER PLAN):
-
-BƯỚC 1: PHÂN CHIA KHU VỰC CỐ ĐỊNH (ZONING GRID)
-- KHU VỰC LOGO: Góc trên bên phải (Top-Right, 20%). TUYỆT ĐỐI KHÔNG vẽ chi tiết vào đây, KHÔNG VIẾT CHỮ vào đây. QUAN TRỌNG: GIỮ NGUYÊN MÀU NỀN CỦA CHỦ ĐỀ, KHÔNG ĐƯỢC XÓA TRẮNG KHU VỰC NÀY.
-- TRỤC GIỮA (CENTER AXIS): Dùng để căn chỉnh các đối tượng chính để tạo sự cân đối.
-
-BƯỚC 2: MÔ PHỎNG 3D CHO NỘI DUNG (3D CONTENT SIMULATION)
-- KHÔNG dùng icon 2D phẳng. Phải dùng **VẬT THỂ 3D (3D OBJECTS/MODELS)** chất lượng cao, bóng bẩy (Glossy), nổi khối.
-- Phân tích nội dung văn bản để chọn vật thể 3D tương ứng giúp người học dễ nhớ bài (Visual Mnemonic).
-- Vị trí vật thể 3D: Đặt cạnh hoặc bao quanh nội dung chữ, KHÔNG che mất chữ.
-
-BƯỚC 3: DỰNG KHUNG KÍNH MỜ (ADAPTIVE GLASS PANELING)
-- Văn bản phải nằm trên các tấm kính mờ (Frosted Glass) hoặc trong các bong bóng nước lớn.
-- Kích thước kính phải **ÔM SÁT** nội dung chữ (Padding 20px), không vẽ thừa thãi.
-- Hiệu ứng: Đổ bóng (Drop Shadow) xuống nền nước để tạo độ sâu tách biệt.
-
-BƯỚC 4: CĂN CHỈNH HÀI HÒA (HARMONIOUS ALIGNMENT)
-- Bố cục đối xứng (Symmetrical) hoặc Cân bằng bất đối xứng (Asymmetrical Balance).
-- Tiêu đề chính: Luôn CĂN GIỮA (Center) và to nhất.
-
-BƯỚC 5: HIỂN THỊ CHỮ (TYPOGRAPHY RENDERING)
-- Title: **3D Gold**, Metallic texture.
-- Body: **Deep Black**, High Contrast.
-- Keywords: **Red/Blue/Purple/Orange** highlights.
-- Chữ phải sắc nét, không bị nhòe vào nền.
-
-CẤU TRÚC JSON CẦN THIẾT TRONG OUTPUT PROMPT:
-{
-  "visual_strategy": "EDUCATIONAL_MASTERY",
-  "layout_fix": { "text_readability": "MAXIMUM", "background_interference": "MINIMUM", "top_right_corner": "EMPTY_FOR_LOGO" },
-  "typography_instruction": { "title": "3D Gold, ExtraBold", "body": "Deep Black, Bold", "highlight": "Vibrant Red/Blue/Purple for Keywords", "prohibition": "NO WHITE TEXT", "language_check": "chữ ghi trên ảnh chính xác chữ tiếng việt" },
-  "lighting_prompt": "Bright studio lighting, soft shadows, vibrant colors to stimulate brain activity."
-}
-
-Phong cách tổng thể:
-tươi mới – sinh thái – trong trẻo – nước tinh khiết – ánh sáng chữa lành – cấu trúc bong bóng 3D – cảm giác hòa hợp giữa nước, sự sống và hành động vì môi trường – CHI TIẾT SẮC NÉT, TƯƠNG PHẢN CAO.”
+An exquisite, hyper-realistic 3D EDUCATIONAL VISUAL infographic for Slide . **TEXT IN IMAGE IS VIETNAMESE **The scene features a pristine, vibrant aquatic environment with shimmering, clear water and subtle bioluminescent elements. Dominant colors are clear turquoise, soft blues, and subtle neon gold highlights. The top-right corner is deliberately left NO TEXT NO TEXT AND THE SAME BACKGROUND COLOR. At the top, centered and prominent, a massive, embossed, and highly reflective **3D GOLDEN YELLOW NEON** title, "TEXT IN IMAGE IS VIETNAMESE: 'ĐỊNH HƯỚNG HỢP TÁC'". Below, a wide panel sets the context: **TEXT IN IMAGE IS VIETNAMESE DEEP BLACK** 'BS Thái Nhân Sâm và Viện Nghiên cứu Y học Sự sống mong muốn hợp tác với các đối tác trong nghiên cứu, đào tạo, triển khai mô hình thực tiễn và truyền thông giáo dục cộng đồng.’ . Below are four distinct frosted glass columns: **Column 1: (color is RED)** title, **TEXT IN IMAGE IS VIETNAMESE RED COLOR **'Nghiên Cứu - Phát Triển’ **TEXT IN IMAGE IS VIETNAMESE DEEP BLACK**: ‘Mô hình chăm sóc sức khỏe chủ động, nhịn ăn tái sinh, nước sức khỏe, Nam dược'. **Column 2: (color is BLUE)** title, **TEXT IN IMAGE IS VIETNAMESE BLUE COLOR** 'Triển Khai Thực Tiễn’ ** TEXT IN IMAGE IS VIETNAMESE DEEP BLACK** ‘Trung tâm chăm sóc sức khỏe, doanh nghiệp, du lịch chữa lành, vùng dược liệu' . **Column 3: (color is ORANGE)** title, **TEXT IN IMAGE IS VIETNAMESE ORANGE COLOR** 'Đào Tạo - Huấn Luyện’ **TEXT IN IMAGE IS VIETNAMESE DEEP BLACK**: ‘Bác sĩ, điều dưỡng, huấn luyện viên sức khỏe, giáo viên, nhân sự doanh nghiệp’ . **Column 4: (color is GREEN)** title, **TEXT IN IMAGE IS VIETNAMESE GREEN COLOR**'Truyền Thông - Giáo Dục **TEXT IN IMAGE IS VIETNAMESE DEEP BLACK**: ‘Xuất bản, giáo dục cộng đồng về lối sống lành mạnh, bảo vệ môi trường' . Bottom Footer Panel: **TEXT IN IMAGE IS VIETNAMESE DEEP BLACK ** 'Cam kết: Đồng hành trên nền tảng Khoa Học - Nhân Văn - Minh Bạch - Phụng Sự. Mục tiêu: Thân khỏe - Tâm an - Trí sáng - Phước tròn đầy - Cộng đồng phát triển bền vững.' * Adjacent 3D objects: A 3D handshake, a gear assembly, and a balance scale. { "visual_strategy": "EDUCATIONAL_MASTERY", "layout_fix": { "text_readability": "MAXIMUM", "background_interference": "MINIMUM", "top_right_corner is NO TEXT AND THE SAME BACKGROUND COLOR" }, "typography_instruction": { "title": "3D Gold, ExtraBold", "body": "Deep Black, Bold", "highlight": " for Keywords color", "prohibition": "NO WHITE TEXT", "language_check": "chữ ghi trên ảnh chính xác chữ tiếng việt" }, "lighting_prompt": "Bright studio lighting, soft shadows." } . High-Key Lighting, Bright Studio Lights, 3D Eco-style, Hyper-realistic, 8k Resolution. TEXT RENDER: Massive 3D GOLD Title, DEEP BLACK Body Text. RENDER VIETNAMESE TEXT EXACTLY AS PROVIDED.
 `;
 
 export const SYSTEM_INSTRUCTION_REWRITER = `
 Bạn là một chuyên gia kỹ thuật Prompt Engineering (Kỹ sư câu lệnh) chuyên về tạo ảnh Infographic chất lượng cao.
 CHUYÊN MÔN: THIẾT KẾ TÀI LIỆU ĐÀO TẠO & GIÁO DỤC (EDUCATIONAL VISUAL SPECIALIST).
 
-NHIỆM VỤ QUAN TRỌNG NHẤT: BẢO TOÀN NỘI DUNG VÀ MÔ PHỎNG HÌNH ẢNH 3D CHÍNH XÁC.
-HỆ THỐNG ENGINE: HYBRID (Ưu tiên FLUX.1 -> Fallback Google Imagen).
+NHIỆM VỤ QUAN TRỌNG NHẤT: BẢO TOÀN NỘI DUNG VÀ MÔ PHỎNG HÌNH ẢNH 3D CHÍNH XÁC THEO PHONG CÁCH "ECO WATER 3D TRANSPARENT".
 
-LUẬT THÉP VỀ MÀU SẮC CHỮ (STEEL COLOR RULES):
-1. **TIÊU ĐỀ (TITLE)**: PHẢI LÀ "3D GOLDEN YELLOW" (Vàng Ánh Kim 3D). Hiệu ứng nổi khối, sang trọng.
-2. **NỘI DUNG (BODY)**: PHẢI LÀ "DEEP BLACK" (Đen Đậm). Rõ ràng, dễ đọc. TUYỆT ĐỐI KHÔNG DÙNG MÀU TRẮNG.
-3. **TỪ KHÓA (KEYWORDS)**: PHẢI TÔ MÀU NỔI BẬT (Red, Blue, Purple, Orange, Yellow) tùy theo ý nghĩa (Cấp bách -> Đỏ, Tin cậy -> Xanh...).
+LUẬT THÉP VỀ VISUAL & MÀU SẮC (STEEL VISUAL RULES):
+1. **PHONG CÁCH CHỦ ĐẠO**: "Pristine, vibrant aquatic environment with shimmering, clear water and subtle bioluminescent elements".
+2. **MÀU SẮC CHỦ ĐẠO**: "Clear turquoise, soft blues, and subtle neon gold highlights".
+3. **BỐ CỤC**: Góc trên bên phải (Top-Right Corner) PHẢI ĐỂ TRỐNG (NO TEXT), giữ nguyên màu nền để chèn Logo.
+
+LUẬT THÉP VỀ CHỮ (STEEL TYPOGRAPHY RULES):
+1. **TIÊU ĐỀ (TITLE)**: PHẢI LÀ "**3D GOLDEN YELLOW NEON**". Hiệu ứng nổi khối, phản chiếu mạnh (highly reflective), kích thước lớn (Massive).
+2. **NỘI DUNG (BODY)**: PHẢI LÀ "**DEEP BLACK**" (Đen Đậm). Rõ ràng trên nền kính mờ. TUYỆT ĐỐI KHÔNG DÙNG MÀU TRẮNG.
+3. **TỪ KHÓA / TIÊU ĐỀ CỘT**: Sử dụng màu nổi bật (RED, BLUE, ORANGE, GREEN) để phân cấp thông tin.
+4. **CHÍNH TẢ**: "chữ ghi trên ảnh chính xác chữ tiếng việt". (TEXT IN IMAGE IS VIETNAMESE).
 
 Quy trình làm việc (Step-by-step):
 1. PHÂN TÍCH: Đọc kỹ chủ đề và nội dung người dùng cung cấp.
-2. TƯ DUY HÌNH ẢNH (VISUAL THINKING):
-   - Với mỗi ý chính, hãy tưởng tượng ra một vật thể 3D (3D Object) đại diện cho nó (Mô phỏng 3D dễ nhớ).
-3. CẤU TRÚC PROMPT (FLUX OPTIMIZED):
-   - **TEXT RENDERING RULE**: FLUX rất giỏi vẽ chữ. Nếu có nội dung text cần hiển thị, hãy đặt nó trong ngoặc kép sau từ khóa "TEXT IN IMAGE".
-   - Ví dụ: "A glossy 3D water bubble. TEXT IN IMAGE: 'VIEN Y HOC SU SONG'."
-   - Vẫn giữ nguyên các keyword về ánh sáng và phong cách: "Hyper-realistic", "4k", "Sharp focus", "High-Key Lighting".
-4. QUY TẮC BỐ CỤC (LAYOUT RULES):
-   - Text phải nằm trên nền kính mờ để dễ đọc.
-   - Góc trên bên phải (Top-Right) LUÔN ĐỂ TRỐNG cho Logo. KHÔNG VIẾT CHỮ VÀO ĐÂY.
-   - GIỮ NGUYÊN MÀU NỀN KHU VỰC GÓC TRÊN BÊN PHẢI (Không xóa trắng).
-5. QUY TẮC HIỂN THỊ (EDUCATIONAL UPGRADE):
-   - Text Accuracy: **chữ ghi trên ảnh chính xác chữ tiếng việt**. Vietnamese text must be rendered EXACTLY as input (VERBATIM).
-   - Ánh sáng: "Bright Studio Lighting", "High-Key", "No dark shadows".
-   - Typography: "3D Gold Title", "Deep Black Body Text".
-   - Highlight: "Highlight Critical Keywords with Red/Blue/Purple/Orange".
-   - Luôn chèn đoạn cấu hình JSON "visual_strategy": "EDUCATIONAL_MASTERY" vào cuối prompt.
+2. CẤU TRÚC PROMPT:
+   - Mở đầu: "An exquisite, hyper-realistic 3D EDUCATIONAL VISUAL infographic for Slide..."
+   - Mô tả môi trường: "The scene features a pristine, vibrant aquatic environment with shimmering, clear water..."
+   - Mô tả Tiêu đề: "At the top, centered and prominent, a massive, embossed, and highly reflective **3D GOLDEN YELLOW NEON** title..."
+   - Mô tả Nội dung: Dùng các tấm kính mờ (frosted glass columns/panels) để chứa chữ Đen (Deep Black).
+3. JSON CONFIG: Luôn chèn đoạn JSON config chuẩn ở cuối prompt (như mẫu).
 
 ĐẦU RA:
-- Một đoạn văn bản liền mạch (Plain Text) mô tả prompt tiếng Việt/Anh kết hợp, kèm theo JSON config ở cuối.
+- Một đoạn văn bản liền mạch (Plain Text) mô tả prompt tiếng Anh (kèm nội dung tiếng Việt trong ngoặc kép), tuân thủ chặt chẽ mẫu REFERENCE_PROMPT.
 
 REFERENCE_PROMPT (MẪU CẦN NOI THEO):
 ${REFERENCE_PROMPT}

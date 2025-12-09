@@ -771,17 +771,14 @@ const App: React.FC = () => {
   };
 
   const appendTextColorPrompt = (originalPrompt: string) => {
-      // STEEL COMMAND: Enforce specific colors regardless of UI choice if needed, 
-      // but respecting the "Style" variables for user flexibility.
-      // HOWEVER, based on user request, we enforce "Gold Title" and "Black Body" strongly.
-      // UPDATED: Added "chữ ghi trên ảnh chính xác chữ tiếng việt" as strictly requested before content.
+      // STEEL COMMAND: Enforce specific colors and style based on new requirements
       
-      const colorInstruction = `STRICT TEXT COLOR & RENDER RULES (LUẬT THÉP):
-      1. **TITLE (TIÊU ĐỀ)**: MUST be 3D GOLDEN YELLOW (Vàng Ánh Kim), Massive 3D Block Letters, Glossy/Shiny finish. High Contrast.
-      2. **BODY TEXT (NỘI DUNG)**: MUST be DEEP BLACK (Đen Đậm), Bold, and Sharp. **ABSOLUTELY NO WHITE TEXT**.
-      3. **HIGHLIGHTS**: Automatically colorize KEYWORDS based on urgency/importance: RED (Critical), BLUE (Trust), PURPLE (Wisdom), ORANGE (Action).
-      4. **VIETNAMESE TEXT ACCURACY**: chữ ghi trên ảnh chính xác chữ tiếng việt. TEXT MUST BE RENDERED EXACTLY AS PROVIDED (VERBATIM). NO SPELLING ERRORS. NO TRANSLATION.
-      5. **VISUALS**: 3D Eco-style elements, Water/Nature theme.
+      const colorInstruction = `STRICT VISUAL & TEXT COLOR RULES (LUẬT THÉP):
+      1. **STYLE**: Pristine, vibrant aquatic environment with shimmering, clear water and subtle bioluminescent elements. Dominant colors: Clear turquoise, soft blues, subtle neon gold highlights.
+      2. **TITLE**: MUST be **3D GOLDEN YELLOW NEON** (Vàng Ánh Kim Neon). Massive 3D Block Letters, Highly Reflective, Embossed.
+      3. **BODY TEXT**: MUST be **DEEP BLACK** (Đen Đậm). Bold and Sharp. **ABSOLUTELY NO WHITE TEXT**.
+      4. **KEYWORDS**: Colorize keywords with RED, BLUE, ORANGE, GREEN.
+      5. **VIETNAMESE TEXT ACCURACY**: chữ ghi trên ảnh chính xác chữ tiếng việt. TEXT MUST BE RENDERED EXACTLY AS PROVIDED (VERBATIM).
       `;
       
       // UPDATED RULE: Protect Top-Right Corner (Keep background color, NO TEXT)
