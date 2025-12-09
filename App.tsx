@@ -9,6 +9,7 @@ import { rewritePromptService, generateInfographicImage, generateSlideDeckPrompt
 import { getExchangeRate } from './services/exchangeRateService';
 import { overlayLogo, overlayAvatar } from './utils/imageProcessor';
 import { exportToPDF, exportToPPTX, downloadAllImagesAsZip, exportPromptsToTxt } from './utils/documentExporter';
+import { exportSafeSequencedPrompts } from './utils/safeExporter_v2';
 import { convertPdfToImages } from './utils/pdfProcessor';
 import { REFERENCE_PROMPT, LIMES_LOGO_SVG, SOCIAL_LINKS, BASE_PRICE_IMAGE_USD, BASE_PRICE_FLASH_CALL_USD, BASE_PRICE_FLUX_USD, MC_AGES, MC_GENRES, MC_NATIONALITIES } from './constants';
 import { AppStatus, AspectRatioType, GenerationMode, Slide, MCAgeGroup, MCGenre, MCScene, MCNationality, ContentMode, ConsoleData, BatchStatus } from './types';
@@ -591,7 +592,7 @@ const App: React.FC = () => {
               [sceneKey]: { ...prev[sceneKey], status: 'ERROR' }
           }));
           if (err.message === "DAILY_QUOTA_EXCEEDED") {
-              setError("Đã hết hạn mức tạo ảnh trong ngày (Daily Quota). Vui lòng đổi API Key mới (Nút khiên ở menu) để tiếp tục.");
+              setError("Đã hết hạn mức tạo ảnh MC trong ngày (Daily Quota). Vui lòng đổi API Key mới (Nút khiên ở menu) để tiếp tục.");
           } else if (err.message === "PERMISSION_DENIED") {
               handlePermissionDenied();
           } else {
@@ -796,8 +797,11 @@ const App: React.FC = () => {
 
       for (let i = 0; i < newSlides.length; i++) {
           if (abortGenRef.current) break;
+          // Skip if already optimized to save time/cost, unless user forces a re-run
+          // For sequential loop requested by user, we might want to ensure strict compliance
           if (newSlides[i].isOptimized) continue;
 
+          // Visual Indicator that this slide is being processed
           newSlides[i] = { ...newSlides[i], status: 'GENERATING' }; 
           setSlides([...newSlides]);
           setSelectedSlideId(newSlides[i].id);
@@ -825,7 +829,7 @@ const App: React.FC = () => {
                   abortGenRef.current = true;
                   break;
               }
-              newSlides[i] = { ...newSlides[i], status: 'PENDING' };
+              newSlides[i] = { ...newSlides[i], status: 'PENDING' }; // Revert status
               setSlides([...newSlides]);
           }
           await delay(500); 
@@ -1396,8 +1400,10 @@ const App: React.FC = () => {
                 slides={slides} 
                 onUpdateSlide={handleGridSlideUpdate} 
                 onConfirmBatch={handleRunBatch}
-                onExportPrompts={() => exportPromptsToTxt(slides, topic)}
+                onExportPrompts={() => exportSafeSequencedPrompts(slides, topic, 'SLIDE')}
                 unitPrice={currentUnitPrice}
+                isOptimizing={isOptimizing} // Pass optimization state
+                onOptimize={handleOptimizeAllPrompts} // Pass optimization handler
               />
           )}
 

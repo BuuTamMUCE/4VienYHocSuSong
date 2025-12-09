@@ -1,6 +1,6 @@
 import React from 'react';
 import { Slide } from '../types';
-import { Play, Type, Edit3, ShieldCheck, LayoutGrid, FileText } from 'lucide-react';
+import { Play, Type, Edit3, ShieldCheck, LayoutGrid, FileText, Sparkles, Loader2 } from 'lucide-react';
 import { SmartEditButton } from './SmartEditButton';
 
 interface SlideEditorGridProps {
@@ -9,6 +9,8 @@ interface SlideEditorGridProps {
   onConfirmBatch: () => void;
   onExportPrompts: () => void; // New prop for export action
   unitPrice: number;
+  isOptimizing?: boolean;
+  onOptimize?: () => void;
 }
 
 export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({ 
@@ -16,7 +18,9 @@ export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({
   onUpdateSlide, 
   onConfirmBatch,
   onExportPrompts,
-  unitPrice
+  unitPrice,
+  isOptimizing = false,
+  onOptimize
 }) => {
   const totalCost = slides.length * unitPrice;
 
@@ -45,18 +49,38 @@ export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({
             </div>
             
             <div className="flex gap-3">
-              <button 
-                onClick={onExportPrompts}
-                className="px-5 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-2xl font-bold text-sm shadow-sm transition-all flex items-center gap-2"
-                title="Tải file TXT chứa prompt (Raw) để sử dụng ở công cụ khác"
-              >
-                <FileText className="w-5 h-5 text-blue-500" />
-                <span className="hidden sm:inline">Tải Prompt (Raw TXT)</span>
-              </button>
+              {/* BUTTON: OPTIMIZE PROMPTS */}
+              {onOptimize && (
+                  <button 
+                    onClick={onOptimize}
+                    disabled={isOptimizing}
+                    className={`px-5 py-4 rounded-2xl font-bold text-sm shadow-sm transition-all flex items-center gap-2
+                       ${isOptimizing ? 'bg-purple-100 text-purple-600 cursor-not-allowed' : 'bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200'}
+                    `}
+                    title="Viết lại toàn bộ Prompt theo chuẩn tuần tự (Step-by-step Loop)"
+                  >
+                    {isOptimizing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
+                    <span className="hidden sm:inline">{isOptimizing ? 'Đang viết Prompt...' : 'Chuẩn Hóa Prompt (Tuần Tự)'}</span>
+                  </button>
+              )}
 
+              {/* BUTTON: DOWNLOAD PROMPTS - HIDDEN WHILE OPTIMIZING */}
+              {!isOptimizing && (
+                  <button 
+                    onClick={onExportPrompts}
+                    className="px-5 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-2xl font-bold text-sm shadow-sm transition-all flex items-center gap-2 animate-fade-in"
+                    title="Tải file TXT chứa prompt (Raw) để sử dụng ở công cụ khác"
+                  >
+                    <FileText className="w-5 h-5 text-blue-500" />
+                    <span className="hidden sm:inline">Tải Prompt (Raw TXT)</span>
+                  </button>
+              )}
+
+              {/* BUTTON: GENERATE IMAGES */}
               <button 
                 onClick={onConfirmBatch}
-                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center gap-3"
+                disabled={isOptimizing}
+                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Play className="w-6 h-6 fill-current" />
                 XÁC NHẬN & TẠO {slides.length} ẢNH
@@ -71,9 +95,13 @@ export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({
         {slides.map((slide) => (
           <div 
             key={slide.id} 
-            className="group bg-white/70 backdrop-blur-md rounded-3xl p-5 border border-white/60 shadow-sm hover:shadow-xl hover:border-cyan-200 transition-all flex flex-col relative"
+            className={`group bg-white/70 backdrop-blur-md rounded-3xl p-5 border shadow-sm hover:shadow-xl transition-all flex flex-col relative
+               ${slide.status === 'GENERATING' ? 'border-purple-300 ring-2 ring-purple-100 scale-[1.02]' : 'border-white/60 hover:border-cyan-200'}
+            `}
           >
-            <div className="absolute -top-3 -left-3 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center font-bold text-slate-600 border border-slate-200 shadow-sm z-10 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+            <div className={`absolute -top-3 -left-3 w-10 h-10 rounded-full flex items-center justify-center font-bold border shadow-sm z-10 transition-colors
+               ${slide.status === 'GENERATING' ? 'bg-purple-500 text-white border-purple-600 animate-pulse' : 'bg-slate-100 text-slate-600 border-slate-200 group-hover:bg-cyan-500 group-hover:text-white'}
+            `}>
               {slide.id}
             </div>
 
@@ -121,7 +149,7 @@ export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({
                  Nanobana 3.0 Pro
                </span>
                <div className="flex items-center gap-1 text-[10px] text-green-600 font-bold">
-                 <ShieldCheck className="w-3 h-3" /> WYSIWYG Ready
+                 {slide.isOptimized ? <><ShieldCheck className="w-3 h-3" /> Prompt Chuẩn Hóa</> : <span className="text-slate-400">Chưa tối ưu</span>}
                </div>
             </div>
           </div>
