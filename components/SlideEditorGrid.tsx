@@ -1,13 +1,13 @@
-
 import React from 'react';
 import { Slide } from '../types';
-import { Play, Type, Edit3, ShieldCheck, LayoutGrid } from 'lucide-react';
+import { Play, Type, Edit3, ShieldCheck, LayoutGrid, FileText } from 'lucide-react';
 import { SmartEditButton } from './SmartEditButton';
 
 interface SlideEditorGridProps {
   slides: Slide[];
   onUpdateSlide: (id: number, newTitle: string, newContent: string) => void;
   onConfirmBatch: () => void;
+  onExportPrompts: () => void; // New prop for export action
   unitPrice: number;
 }
 
@@ -15,6 +15,7 @@ export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({
   slides, 
   onUpdateSlide, 
   onConfirmBatch,
+  onExportPrompts,
   unitPrice
 }) => {
   const totalCost = slides.length * unitPrice;
@@ -43,13 +44,24 @@ export const SlideEditorGrid: React.FC<SlideEditorGridProps> = ({
               </div>
             </div>
             
-            <button 
-              onClick={onConfirmBatch}
-              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center gap-3"
-            >
-              <Play className="w-6 h-6 fill-current" />
-              XÁC NHẬN & TẠO {slides.length} ẢNH
-            </button>
+            <div className="flex gap-3">
+              <button 
+                onClick={onExportPrompts}
+                className="px-5 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-2xl font-bold text-sm shadow-sm transition-all flex items-center gap-2"
+                title="Tải file TXT chứa prompt (Raw) để sử dụng ở công cụ khác"
+              >
+                <FileText className="w-5 h-5 text-blue-500" />
+                <span className="hidden sm:inline">Tải Prompt (Raw TXT)</span>
+              </button>
+
+              <button 
+                onClick={onConfirmBatch}
+                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/30 transition-all transform hover:-translate-y-1 flex items-center gap-3"
+              >
+                <Play className="w-6 h-6 fill-current" />
+                XÁC NHẬN & TẠO {slides.length} ẢNH
+              </button>
+            </div>
           </div>
         </div>
       </div>

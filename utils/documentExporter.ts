@@ -1,4 +1,3 @@
-
 import { Slide } from "../types";
 
 // Declare libraries loaded via CDN in index.html
@@ -6,6 +5,9 @@ declare const jspdf: any;
 declare const PptxGenJS: any;
 declare const JSZip: any;
 declare const saveAs: any;
+
+// Standard Style Suffix to ensure quality when exporting raw prompts
+const STYLE_SUFFIX = " . High-Key Lighting, Bright Studio Lights, 3D Eco-style, Hyper-realistic, 8k Resolution. TEXT RENDER: Massive Bold Typography, Crystal Clear Font, High Contrast.";
 
 export const exportToPDF = (slides: Slide[], topic: string) => {
     if (typeof jspdf === 'undefined') {
@@ -159,4 +161,43 @@ export const downloadAllImagesAsZip = async (slides: Slide[], topic: string, for
     // Generate and save ZIP
     const content = await zip.generateAsync({ type: "blob" });
     saveAs(content, `${folderName}_${format.toUpperCase()}.zip`);
+};
+
+/**
+ * Exports visual prompts to a RAW TXT file.
+ * Features:
+ * 1. Single line per prompt (no internal newlines).
+ * 2. No prefixes (e.g., "Slide 1:").
+ * 3. Auto-injects Style/Lighting keywords if missing.
+ */
+export const exportPromptsToTxt = (slides: Slide[], topic: string) => {
+    if (typeof saveAs === 'undefined') {
+        alert("Thư viện FileSaver chưa tải xong.");
+        return;
+    }
+
+    if (!slides || slides.length === 0) {
+        alert("Không có dữ liệu prompt để xuất.");
+        return;
+    }
+
+    // Process slides to get raw, enhanced prompts
+    const content = slides.map((slide) => {
+        let rawPrompt = slide.prompt || "";
+        
+        // 1. Flatten to single line: Remove newlines
+        let cleanPrompt = rawPrompt.replace(/(\r\n|\n|\r)/gm, " ").replace(/\s+/g, " ").trim();
+        
+        // 2. Check and Inject Style Suffix if keyphrases are missing
+        // This ensures the raw exported text generates high-quality images elsewhere
+        if (!cleanPrompt.toLowerCase().includes("high-key lighting")) {
+            cleanPrompt += STYLE_SUFFIX;
+        }
+
+        // Return only the prompt content
+        return cleanPrompt;
+    }).join('\n\n'); // Separate prompts by double newline
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, `${topic.replace(/\s+/g, '_')}_Raw_Prompts.txt`);
 };

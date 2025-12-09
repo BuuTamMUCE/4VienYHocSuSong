@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef, useEffect } from 'react';
 import { ApiKeySelector } from './components/ApiKeySelector';
 import { PromptDisplay } from './components/PromptDisplay';
@@ -10,7 +8,7 @@ import { AppGuideAssistant } from './components/AppGuideAssistant';
 import { rewritePromptService, generateInfographicImage, generateSlideDeckPrompts, transformSlideImageToPrompt, generateMCScripts, generateTimeBasedSlideDeck, regeneratePromptFromContent, optimizeSlidePromptWithVerification, optimizeThumbnailPrompt, autoFixPrompt } from './services/geminiService';
 import { getExchangeRate } from './services/exchangeRateService';
 import { overlayLogo, overlayAvatar } from './utils/imageProcessor';
-import { exportToPDF, exportToPPTX, downloadAllImagesAsZip } from './utils/documentExporter';
+import { exportToPDF, exportToPPTX, downloadAllImagesAsZip, exportPromptsToTxt } from './utils/documentExporter';
 import { convertPdfToImages } from './utils/pdfProcessor';
 import { REFERENCE_PROMPT, LIMES_LOGO_SVG, SOCIAL_LINKS, BASE_PRICE_IMAGE_USD, BASE_PRICE_FLASH_CALL_USD, BASE_PRICE_FLUX_USD, MC_AGES, MC_GENRES, MC_NATIONALITIES } from './constants';
 import { AppStatus, AspectRatioType, GenerationMode, Slide, MCAgeGroup, MCGenre, MCScene, MCNationality, ContentMode, ConsoleData, BatchStatus } from './types';
@@ -1398,6 +1396,7 @@ const App: React.FC = () => {
                 slides={slides} 
                 onUpdateSlide={handleGridSlideUpdate} 
                 onConfirmBatch={handleRunBatch}
+                onExportPrompts={() => exportPromptsToTxt(slides, topic)}
                 unitPrice={currentUnitPrice}
               />
           )}

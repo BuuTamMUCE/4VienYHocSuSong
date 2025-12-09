@@ -217,7 +217,9 @@ export const generateInfographicImage = async (
     }
 
     try {
-        // Call the new Backend API
+        // Call the new Backend API served by Flask
+        // NOTE: In production (Cloud Run), the frontend and backend are on the same domain.
+        // So we use a relative path.
         const response = await fetch('/api/generate-image', {
             method: 'POST',
             headers: {
@@ -300,7 +302,7 @@ export const transformSlideImageToPrompt = async (base64Image: string): Promise<
             model: 'gemini-2.5-flash',
             contents: [
                 { inlineData: { mimeType: 'image/png', data: base64Image.split(',')[1] } },
-                { text: "Analyze this slide. Extract Title, Content, and write a visual prompt to recreate it in 3D Eco style. JSON: { title, content, prompt }" }
+                { text: "Analyze this slide. TASK 1: Extract text EXACTLY as it appears (VERBATIM). Do not summarize, do not shorten. Fix OCR errors but keep original wording. TASK 2: Write a visual prompt to recreate it in 3D Eco style. Output JSON: { title, content, prompt }" }
             ],
             config: { responseMimeType: "application/json" }
         });
