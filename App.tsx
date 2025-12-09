@@ -1,3 +1,5 @@
+
+
 import React, { useState, useRef, useEffect } from 'react';
 import { ApiKeySelector } from './components/ApiKeySelector';
 import { PromptDisplay } from './components/PromptDisplay';
@@ -11,7 +13,7 @@ import { overlayLogo, overlayAvatar } from './utils/imageProcessor';
 import { exportToPDF, exportToPPTX, downloadAllImagesAsZip, exportPromptsToTxt } from './utils/documentExporter';
 import { exportSafeSequencedPrompts } from './utils/safeExporter_v2';
 import { convertPdfToImages } from './utils/pdfProcessor';
-import { REFERENCE_PROMPT, LIMES_LOGO_SVG, SOCIAL_LINKS, BASE_PRICE_IMAGE_USD, BASE_PRICE_FLASH_CALL_USD, BASE_PRICE_FLUX_USD, MC_AGES, MC_GENRES, MC_NATIONALITIES } from './constants';
+import { REFERENCE_PROMPT, LIMES_LOGO_SVG, SOCIAL_LINKS, BASE_PRICE_IMAGE_USD, BASE_PRICE_FLASH_CALL_USD, BASE_PRICE_FLASH_CALL_USD as BASE_PRICE_FLASH_CALL_USD_ALIAS, BASE_PRICE_FLUX_USD, MC_AGES, MC_GENRES, MC_NATIONALITIES } from './constants';
 import { AppStatus, AspectRatioType, GenerationMode, Slide, MCAgeGroup, MCGenre, MCScene, MCNationality, ContentMode, ConsoleData, BatchStatus } from './types';
 import { Droplets, ArrowRight, Image as ImageIcon, Download, Copy, RefreshCw, Check, ChevronDown, Sparkles, Presentation, Layers, Upload, FileText, X, Edit3, Repeat, FileIcon, Youtube, Facebook, Video, MessageCircle, Square, CircleStop, Mic2, Users, Monitor, Globe, RectangleHorizontal, Clock, FolderArchive, Clapperboard, MessageSquarePlus, ShieldPlus, ListOrdered, Wand, Shield, Layout, Home, ShieldCheck, Activity, Play, Pause, Coins, Wallet, Calculator, TrendingUp } from 'lucide-react';
 
@@ -72,9 +74,9 @@ const App: React.FC = () => {
   // State for Reference Image (Style Transfer)
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
 
-  // NEW: Split text color state
+  // NEW: Split text color state - DEFAULT CHANGED TO BLACK
   const [titleColor, setTitleColor] = useState<string>('gold');
-  const [bodyColor, setBodyColor] = useState<string>('white');
+  const [bodyColor, setBodyColor] = useState<string>('black');
   
   // UI States
   const [isCopied, setIsCopied] = useState(false);
@@ -762,16 +764,27 @@ const App: React.FC = () => {
           case 'black': return "deep BLACK";
           case 'gold': return "glowing GOLD";
           case 'navy': return "dark NAVY BLUE";
+          case 'red': return "vibrant RED";
+          case 'purple': return "rich PURPLE";
           default: return color;
       }
   };
 
   const appendTextColorPrompt = (originalPrompt: string) => {
-      const titleColorDesc = getColorDesc(titleColor);
-      const bodyColorDesc = getColorDesc(bodyColor);
-
-      const colorInstruction = `STRICT TEXT COLOR RULES: The Main Headline/Title MUST be ${titleColorDesc} for emphasis. The details MUST be ${bodyColorDesc}.`;
-      let safeZoneDesc = "COMPOSITION RULE: The TOP-RIGHT corner (approx 20%) is reserved for a logo. Do NOT place text there.";
+      // STEEL COMMAND: Enforce specific colors regardless of UI choice if needed, 
+      // but respecting the "Style" variables for user flexibility.
+      // HOWEVER, based on user request, we enforce "Gold Title" and "Black Body" strongly.
+      
+      const colorInstruction = `STRICT TEXT COLOR & RENDER RULES (LUẬT THÉP):
+      1. **TITLE (TIÊU ĐỀ)**: MUST be 3D GOLDEN YELLOW (Vàng Ánh Kim), Massive 3D Block Letters, Glossy/Shiny finish. High Contrast.
+      2. **BODY TEXT (NỘI DUNG)**: MUST be DEEP BLACK (Đen Đậm), Bold, and Sharp. **ABSOLUTELY NO WHITE TEXT**.
+      3. **HIGHLIGHTS**: Automatically colorize KEYWORDS based on urgency/importance: RED (Critical), BLUE (Trust), PURPLE (Wisdom), ORANGE (Action).
+      4. **VIETNAMESE TEXT ACCURACY**: TEXT MUST BE RENDERED EXACTLY AS PROVIDED (VERBATIM). NO SPELLING ERRORS.
+      5. **VISUALS**: 3D Eco-style elements, Water/Nature theme.
+      `;
+      
+      // UPDATED RULE: Protect Top-Right Corner (Keep background color, NO TEXT)
+      let safeZoneDesc = "LAYOUT RULE: The TOP-RIGHT corner (approx 20%) is RESERVED for a Logo. 1. NO TEXT/TITLES in this area. 2. PRESERVE BACKGROUND COLOR in this area (Do NOT make it white/blank). Keep the nature/water theme consistent across the entire background.";
       
       if (mode === 'THUMBNAIL') {
           safeZoneDesc += " VIRAL THUMBNAIL STYLE: Ultra-high contrast, massive 3D text. SUBTITLE MUST BE LOWERCASE.";
@@ -1466,16 +1479,15 @@ const App: React.FC = () => {
                         {slides.map((slide) => (
                           <div key={slide.id} className="flex gap-2 items-center">
                             <button onClick={() => setSelectedSlideId(slide.id)} className={`flex-grow w-full text-left p-3 rounded-xl border text-sm transition-all flex items-start gap-3 relative overflow-hidden group ${selectedSlideId === slide.id ? 'bg-cyan-50 border-cyan-200 shadow-sm' : 'bg-white/50 border-transparent hover:bg-white'}`}>
-                              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${slide.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : slide.status === 'GENERATING' ? 'bg-yellow-100 text-yellow-700 animate-pulse' : slide.status === 'ERROR' ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-600'}`}>{slide.id}</div>
-                              <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-1">
-                                      <div className="font-bold text-slate-700 truncate">{slide.title}</div>
-                                      {slide.isOptimized && <span title="Đã kiểm tra nội dung"><ShieldCheck className="w-3 h-3 text-green-500" /></span>}
-                                  </div>
-                                  {isTimeBasedSlide && mode === 'SLIDE_DECK' && <div className="text-[9px] text-orange-600 mt-0.5 font-mono">{`~${(slide.id-1)*32}s - ${slide.id*32}s`}</div>}
+                              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${slide.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : slide.status === 'GENERATING' ? 'bg-yellow-100 text-yellow-700 animate-pulse' : slide.status === 'ERROR' ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-500'}`}>{slide.id}</div>
+                              <div className="min-w-0">
+                                <div className="font-bold text-slate-700 truncate text-xs">{slide.title}</div>
+                                <div className="text-[10px] text-slate-500 truncate">{slide.content}</div>
                               </div>
+                              {slide.imageUrl && <div className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg overflow-hidden border border-slate-200"><img src={slide.imageUrl} alt="mini" className="w-full h-full object-cover" /></div>}
                             </button>
-                            <button onClick={() => handleOpenRegenerate(slide.id)} disabled={status === AppStatus.GENERATING_IMAGE} className="p-3 rounded-xl bg-white/50 hover:bg-white border border-transparent hover:border-cyan-200 text-slate-400 hover:text-cyan-600 transition-all shadow-sm"><RefreshCw className={`w-4 h-4 ${slide.status === 'GENERATING' ? 'animate-spin' : ''}`} /></button>
+                            {slide.status === 'ERROR' && <button onClick={() => handleRegenerateSlide(slide.id)} className="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200" title="Thử lại"><RefreshCw className="w-4 h-4" /></button>}
+                            {slide.status === 'COMPLETED' && <button onClick={() => handleOpenRegenerate(slide.id)} className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100" title="Tạo lại (Sửa lỗi)"><Sparkles className="w-4 h-4" /></button>}
                           </div>
                         ))}
                       </div>
@@ -1483,108 +1495,154 @@ const App: React.FC = () => {
                   )}
                 </div>
 
-                {/* RIGHT PANEL (PREVIEW) */}
-                <div className="lg:col-span-8 h-auto order-1 lg:order-2 flex flex-col gap-4">
-                  <div className="w-full bg-slate-900/5 backdrop-blur-sm rounded-3xl border border-white/40 shadow-2xl overflow-hidden relative group min-h-[400px] lg:min-h-[500px] flex-grow flex flex-col">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none z-10" />
-                    {currentDisplayImage ? (
-                      <>
-                         {mode === 'REMAKE_SLIDE' && currentOriginalImage ? (
-                             <div className="grid grid-cols-2 h-full flex-grow">
-                                 <div className="border-r border-white/50 relative bg-slate-100"><div className="absolute top-3 left-3 bg-black/60 text-white text-[10px] px-2 py-1 rounded backdrop-blur-md z-20">Ảnh Cũ</div><div className="w-full h-full flex items-center justify-center p-4"><img src={currentOriginalImage} className="max-w-full max-h-full object-contain shadow-sm" /></div></div>
-                                 <div className="relative bg-[#EBF7F8]"><div className="absolute top-3 left-3 bg-cyan-600/90 text-white text-[10px] px-2 py-1 rounded backdrop-blur-md z-20 shadow-lg shadow-cyan-500/20">Ảnh Mới (AI)</div><div className="w-full h-full flex items-center justify-center p-4"><img src={currentDisplayImage} className="max-w-full max-h-full object-contain shadow-lg" /></div></div>
-                             </div>
-                         ) : (
-                             <div className="w-full h-full flex items-center justify-center bg-[#EBF7F8] p-4 flex-grow"><img src={currentDisplayImage} alt="Generated Output" className="max-w-full max-h-full object-contain shadow-2xl rounded-lg" /></div>
-                         )}
-                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 p-1.5 bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 z-30 transition-all hover:scale-105">
-                          <button onClick={handleCopyToClipboard} className="p-3 rounded-xl hover:bg-slate-100 text-slate-700 relative tooltip-trigger" title="Sao chép ảnh">{isCopied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}</button>
-                          {(mode === 'SLIDE_DECK' || mode === 'REMAKE_SLIDE') && <button onClick={() => setShowEditModal(true)} className="p-3 rounded-xl hover:bg-slate-100 text-cyan-600 relative" title="Chỉnh sửa nội dung"><Edit3 className="w-5 h-5" /></button>}
-                          {((mode === 'SINGLE' || mode === 'THUMBNAIL') || selectedSlideId) && <button onClick={() => handleOpenRegenerate(selectedSlideId || 'SINGLE')} disabled={status === AppStatus.GENERATING_IMAGE} className="p-3 rounded-xl hover:bg-slate-100 text-orange-600 relative" title="Tạo lại ảnh này (Sửa lỗi)"><RefreshCw className={`w-5 h-5 ${status === AppStatus.GENERATING_IMAGE && (mode === 'SINGLE' || mode === 'THUMBNAIL' || currentSlide?.status === 'GENERATING') ? 'animate-spin' : ''}`} /></button>}
-                          <div className="w-px h-6 bg-slate-200 mx-1" />
-                          <div className="relative">
-                            <button onClick={() => setShowDownloadMenu(!showDownloadMenu)} className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all"><Download className="w-4 h-4" /><span>Tải về</span><ChevronDown className={`w-4 h-4 transition-transform ${showDownloadMenu ? 'rotate-180' : ''}`} /></button>
-                            {showDownloadMenu && (
-                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden py-1 animate-fade-in-up text-left">
-                                {(mode === 'SLIDE_DECK' || mode === 'REMAKE_SLIDE') && (
-                                    <>
-                                        <button onClick={() => handleDownload('pdf')} className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-cyan-50 hover:text-cyan-700 flex items-center gap-2 font-medium"><FileText className="w-4 h-4 text-red-500" /> Xuất PDF (Bộ)</button>
-                                        <button onClick={() => handleDownload('pptx')} className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-cyan-50 hover:text-cyan-700 flex items-center gap-2 font-medium"><Presentation className="w-4 h-4 text-orange-500" /> Xuất PPTX (Bộ)</button>
-                                        <button onClick={() => handleDownload('zip-png')} className="w-full text-left px-4 py-3 text-sm text-slate-700 hover:bg-cyan-50 hover:text-cyan-700 flex items-center gap-2 font-medium"><FolderArchive className="w-4 h-4 text-purple-500" /> Tải bộ ảnh (PNG)</button>
-                                        <div className="h-px bg-slate-100 my-1"/>
-                                    </>
-                                )}
-                                <button onClick={() => handleDownload('png')} className="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2"><ImageIcon className="w-3 h-3" /> Ảnh này (PNG)</button>
-                              </div>
-                            )}
-                          </div>
+                {/* RIGHT PANEL - IMAGE PREVIEW */}
+                <div className="lg:col-span-8 h-full flex flex-col order-1 lg:order-2">
+                  <div className="flex-grow bg-white/60 backdrop-blur-xl rounded-3xl shadow-xl shadow-blue-900/5 border border-white/60 overflow-hidden relative group min-h-[400px] flex items-center justify-center">
+                    {status === AppStatus.GENERATING_IMAGE && (
+                      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/50 backdrop-blur-sm">
+                        <div className="relative">
+                           <div className="w-20 h-20 border-4 border-cyan-200 border-t-cyan-500 rounded-full animate-spin"></div>
+                           <div className="absolute inset-0 flex items-center justify-center"><Sparkles className="w-8 h-8 text-cyan-500 animate-pulse" /></div>
                         </div>
-                      </>
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center p-8 bg-white/40 flex-grow">
-                        {status === AppStatus.GENERATING_IMAGE ? (
-                          <div className="flex flex-col items-center text-center">
-                            <div className="relative mb-8"><div className="w-24 h-24 border-4 border-cyan-200 rounded-full animate-ping absolute inset-0"></div><div className="w-24 h-24 bg-gradient-to-tr from-cyan-400 to-blue-500 rounded-full flex items-center justify-center shadow-xl shadow-cyan-500/40 relative z-10 animate-bounce-slow"><Droplets className="w-10 h-10 text-white" /></div></div>
-                            <h3 className="text-xl font-bold text-slate-700 mb-2">{mode === 'SINGLE' || mode === 'THUMBNAIL' ? "Đang thổi hồn vào nước..." : `Đang xử lý Slide ${selectedSlideId || 1}/${slides.length}...`}</h3>
-                            <p className="text-cyan-600 font-bold text-sm mb-4 animate-pulse">{currentSlide?.status === 'GENERATING' ? "Đang tạo ảnh (Tiết kiệm)..." : "Vui lòng đợi..."}</p>
-                            <button onClick={handleStopGeneration} className="flex items-center gap-2 px-5 py-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition-colors font-bold text-sm"><CircleStop className="w-4 h-4" /> Dừng lại</button>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col items-center text-center opacity-40"><div className="w-20 h-20 bg-slate-200 rounded-full flex items-center justify-center mb-4"><ImageIcon className="w-8 h-8 text-slate-400" /></div><p className="font-medium text-slate-500 text-lg">{currentSlide ? currentSlide.title : "Khu vực hiển thị ảnh"}</p><p className="text-sm text-slate-400 mt-1">Ảnh sau khi tạo sẽ xuất hiện tại đây</p></div>
+                        <p className="mt-4 font-bold text-cyan-700 animate-pulse">Đang kiến tạo...</p>
+                        <p className="text-xs text-slate-500 font-medium mt-2">Dùng mô hình NanoBanana 3.0 Pro</p>
+                      </div>
+                    )}
+                    
+                    {currentDisplayImage ? (
+                      <div className="relative w-full h-full flex items-center justify-center bg-slate-100">
+                        <img src={currentDisplayImage} alt="Generated Infographic" className="max-w-full max-h-full object-contain shadow-lg" />
+                        <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                           <button onClick={handleCopyToClipboard} className="p-3 bg-white/90 hover:bg-white text-slate-700 rounded-xl shadow-lg backdrop-blur-sm transition-all transform hover:scale-105" title="Sao chép">
+                              {isCopied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
+                           </button>
+                           <div className="relative">
+                              <button onClick={() => setShowDownloadMenu(!showDownloadMenu)} className="p-3 bg-white/90 hover:bg-white text-slate-700 rounded-xl shadow-lg backdrop-blur-sm transition-all transform hover:scale-105" title="Tải xuống">
+                                <Download className="w-5 h-5" />
+                              </button>
+                              {showDownloadMenu && (
+                                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-30 animate-fade-in-up">
+                                  <div className="p-1">
+                                    <button onClick={() => handleDownload('png')} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-sm font-medium text-slate-700 rounded-lg">Tải ảnh PNG</button>
+                                    <button onClick={() => handleDownload('jpg')} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-sm font-medium text-slate-700 rounded-lg">Tải ảnh JPG (Nhẹ)</button>
+                                    {(mode === 'SLIDE_DECK' || mode === 'REMAKE_SLIDE') && (
+                                      <>
+                                        <div className="h-px bg-slate-100 my-1"></div>
+                                        <button onClick={() => handleDownload('pdf')} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-sm font-medium text-slate-700 rounded-lg flex items-center gap-2"><FileText className="w-4 h-4 text-red-500"/> Xuất PDF</button>
+                                        <button onClick={() => handleDownload('pptx')} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-sm font-medium text-slate-700 rounded-lg flex items-center gap-2"><Presentation className="w-4 h-4 text-orange-500"/> Xuất PowerPoint</button>
+                                        <button onClick={() => handleDownload('zip-png')} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-sm font-medium text-slate-700 rounded-lg flex items-center gap-2"><FolderArchive className="w-4 h-4 text-blue-500"/> ZIP (PNG HQ)</button>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                           </div>
+                        </div>
+                        
+                        {/* REGENERATE OVERLAY BUTTON (SINGLE MODE) */}
+                        {mode === 'SINGLE' && (
+                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                 <button onClick={() => handleOpenRegenerate('SINGLE')} className="px-6 py-3 bg-white/90 hover:bg-white text-slate-800 rounded-full shadow-lg backdrop-blur-sm font-bold text-sm flex items-center gap-2 transform hover:-translate-y-1 transition-all border border-slate-200">
+                                     <Sparkles className="w-4 h-4 text-purple-500" /> Sửa lỗi / Tạo lại
+                                 </button>
+                             </div>
                         )}
+                        {mode === 'REMAKE_SLIDE' && currentOriginalImage && (
+                             <div className="absolute top-4 left-4 w-32 h-auto border-2 border-white shadow-lg rounded-lg overflow-hidden transition-all hover:scale-150 origin-top-left z-10">
+                                 <div className="bg-black/50 text-white text-[10px] font-bold px-1 absolute top-0 left-0">Gốc</div>
+                                 <img src={currentOriginalImage} alt="Original" className="w-full h-full object-cover" />
+                             </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-slate-400 p-8 text-center">
+                        <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-4 shadow-inner">
+                          <ImageIcon className="w-10 h-10 text-slate-300" />
+                        </div>
+                        <p className="text-lg font-medium text-slate-500">Chưa có hình ảnh</p>
+                        <p className="text-sm max-w-xs mt-2">Nhập nội dung và nhấn "Tạo Ảnh" để bắt đầu quy trình sáng tạo.</p>
                       </div>
                     )}
                   </div>
 
-                  {/* EDIT MODAL AND OTHER MODALS ... (Kept existing structure) */}
-                  {/* ... */}
+                  {/* EDIT MODAL FOR SLIDE CONTENT */}
+                  {showEditModal && selectedSlideId && (
+                      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 animate-fade-in">
+                          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 animate-fade-in-up">
+                              <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><Edit3 className="w-5 h-5 text-blue-500" /> Chỉnh sửa nội dung</h3>
+                              <div className="space-y-4">
+                                  <div>
+                                      <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Tiêu đề</label>
+                                      <input 
+                                          type="text" 
+                                          value={slides.find(s => s.id === selectedSlideId)?.title || ''} 
+                                          onChange={(e) => handleContentUpdate(e.target.value, slides.find(s => s.id === selectedSlideId)?.content || '')}
+                                          className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                      />
+                                  </div>
+                                  <div>
+                                      <label className="text-xs font-bold text-slate-500 uppercase mb-1 block">Nội dung</label>
+                                      <textarea 
+                                          value={slides.find(s => s.id === selectedSlideId)?.content || ''} 
+                                          onChange={(e) => handleContentUpdate(slides.find(s => s.id === selectedSlideId)?.title || '', e.target.value)}
+                                          className="w-full h-32 p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-200 resize-none"
+                                      />
+                                  </div>
+                              </div>
+                              <div className="mt-6 flex justify-end gap-3">
+                                  <button onClick={() => setShowEditModal(false)} className="px-4 py-2 text-slate-500 hover:text-slate-700 font-bold">Hủy</button>
+                                  <button onClick={() => handleContentUpdate(slides.find(s => s.id === selectedSlideId)?.title || '', slides.find(s => s.id === selectedSlideId)?.content || '')} className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30">Lưu thay đổi</button>
+                              </div>
+                          </div>
+                      </div>
+                  )}
+
+                  {/* REGENERATE MODAL */}
+                  {regenModal.isOpen && (
+                      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-fade-in">
+                          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 animate-fade-in-up border border-white/40">
+                              <h3 className="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                  <RefreshCw className="w-5 h-5 text-purple-500" /> Tinh chỉnh / Tạo lại
+                              </h3>
+                              <p className="text-sm text-slate-500 mb-4">
+                                  Bạn muốn AI sửa đổi gì ở lần tạo lại này? (Để trống nếu chỉ muốn thử lại ngẫu nhiên)
+                              </p>
+                              <textarea 
+                                  autoFocus
+                                  value={regenModal.currentFeedback}
+                                  onChange={(e) => setRegenModal({ ...regenModal, currentFeedback: e.target.value })}
+                                  placeholder="VD: Làm ảnh sáng hơn, thêm cây xanh, đổi màu nền sang xanh dương..."
+                                  className="w-full h-24 p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-200 text-sm mb-4 resize-none"
+                              />
+                              <div className="flex gap-3 justify-end">
+                                  <button onClick={() => setRegenModal({ ...regenModal, isOpen: false })} className="px-4 py-2 text-slate-500 hover:text-slate-700 font-bold text-sm">Hủy</button>
+                                  <button onClick={handleConfirmRegenerate} className="px-5 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-purple-500/30">
+                                      Xác nhận & Tạo lại
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  )}
+
+                  {/* KEY SELECTOR MODAL */}
+                  {(showKeySelector || (!keyReady && !sessionStorage.getItem('GEMINI_API_KEY'))) && (
+                    <ApiKeySelector onKeySelected={handleKeySelected} onCancel={keyReady ? () => setShowKeySelector(false) : undefined} />
+                  )}
+
+                  {/* CONSOLE MODAL */}
+                  <UnifiedCommandConsole 
+                      isOpen={consoleState.isOpen}
+                      onClose={() => setConsoleState({ ...consoleState, isOpen: false })}
+                      onConfirm={handleConsoleConfirm}
+                      initialData={consoleState.data}
+                  />
+
                 </div>
               </div>
             </div>
           )}
         </main>
       </div>
-
-      {/* MODALS RETAINED FROM ORIGINAL CODE ... */}
-      <UnifiedCommandConsole 
-         isOpen={consoleState.isOpen}
-         onClose={() => setConsoleState({ ...consoleState, isOpen: false })}
-         onConfirm={handleConsoleConfirm}
-         initialData={consoleState.data}
-      />
-
-      {regenModal.isOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-fade-in">
-              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up border border-white/50">
-                  <div className="p-4 border-b border-slate-100 bg-orange-50 flex items-center gap-3"><div className="p-2 bg-orange-100 rounded-full text-orange-600"><MessageSquarePlus className="w-5 h-5" /></div><div><h3 className="font-bold text-slate-800">Xác nhận tạo lại ảnh</h3><p className="text-[10px] text-slate-500">Giúp AI hiểu ý bạn hơn qua ghi chú</p></div></div>
-                  <div className="p-5"><label className="block text-xs font-bold text-slate-500 uppercase mb-2">Ghi chú lỗi / Yêu cầu chỉnh sửa (Tùy chọn)</label><textarea placeholder="Ví dụ: Chữ tiêu đề bị mờ, Logo che mất nội dung, Màu nền quá tối..." className="w-full h-32 p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-orange-400 focus:ring-4 focus:ring-orange-100 outline-none text-sm text-slate-700 resize-none transition-all" value={regenModal.currentFeedback} onChange={(e) => setRegenModal({ ...regenModal, currentFeedback: e.target.value })} autoFocus /></div>
-                  <div className="p-4 bg-slate-50/80 flex justify-end gap-3 border-t border-slate-100"><button onClick={() => setRegenModal({ ...regenModal, isOpen: false })} className="px-4 py-2 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-200 transition-colors">Hủy</button><button onClick={handleConfirmRegenerate} className="px-6 py-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400 shadow-lg shadow-orange-500/20 transition-all flex items-center gap-2"><RefreshCw className="w-4 h-4" /> Xác nhận tạo lại</button></div>
-              </div>
-          </div>
-      )}
-
-      {showEditModal && currentSlide && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 backdrop-blur-md p-4 animate-fade-in">
-              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-fade-in-up border border-white/50">
-                  <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/80"><h3 className="font-bold text-slate-700 flex items-center gap-2"><Edit3 className="w-4 h-4 text-cyan-600" /> Chỉnh sửa Slide {currentSlide.id}</h3><button onClick={() => setShowEditModal(false)} className="text-slate-400 hover:text-red-500 p-1 hover:bg-red-50 rounded-lg transition-colors"><X className="w-5 h-5"/></button></div>
-                  <div className="p-6 space-y-5">
-                      <div><label className="block text-xs font-bold text-slate-500 uppercase mb-2">Tiêu đề Slide</label><input id="edit-title" defaultValue={currentSlide.title} className="w-full p-3.5 rounded-xl border border-slate-200 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100 outline-none font-bold text-slate-800 transition-all" /></div>
-                      <div><label className="block text-xs font-bold text-slate-500 uppercase mb-2">Nội dung thuyết trình</label><textarea id="edit-content" defaultValue={currentSlide.content} rows={8} className="w-full p-3.5 rounded-xl border border-slate-200 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100 outline-none text-sm text-slate-600 leading-relaxed transition-all resize-none" placeholder="Nhập nội dung bài giảng..."></textarea></div>
-                  </div>
-                  <div className="p-4 bg-slate-50/80 flex justify-end gap-3 border-t border-slate-100">
-                      <button onClick={() => setShowEditModal(false)} className="px-5 py-2.5 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-200 transition-colors">Hủy</button>
-                      <button disabled={isUpdatingContent} onClick={() => { const titleInput = document.getElementById('edit-title') as HTMLInputElement; const contentInput = document.getElementById('edit-content') as HTMLTextAreaElement; handleContentUpdate(titleInput.value, contentInput.value); }} className="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-lg shadow-cyan-500/20 transition-all flex items-center gap-2 disabled:opacity-70">{isUpdatingContent ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Đang cập nhật thiết kế...</> : "Lưu Thay Đổi"}</button>
-                  </div>
-              </div>
-          </div>
-      )}
-
-      {(showKeySelector || !keyReady) && (
-          <ApiKeySelector 
-              onKeySelected={handleKeySelected} 
-              onCancel={keyReady ? () => setShowKeySelector(false) : undefined}
-          />
-      )}
     </div>
   );
 };

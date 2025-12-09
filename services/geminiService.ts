@@ -82,6 +82,31 @@ const cleanAndParseJSON = (text: string | undefined, defaultValue: any = {}) => 
   }
 };
 
+// Helper to flatten complex objects into a string to prevent React Error #31
+const flattenToString = (val: any): string => {
+    if (val === null || val === undefined) return "";
+    if (typeof val === 'string') return val;
+    if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+    
+    if (Array.isArray(val)) {
+        return val.map(flattenToString).join('\n');
+    }
+    
+    if (typeof val === 'object') {
+        // Extract values from object and join them
+        return Object.keys(val).map(key => {
+             // Heuristic: if key looks like a bullet point or header, maybe include it? 
+             // For now, just taking values is safer for content, but let's do "Key: Value" if reasonable?
+             // The error showed {Nền Tảng..., Chuyên Môn...} which looks like header->content.
+             const vStr = flattenToString(val[key]);
+             if (vStr.trim()) return `${key}: ${vStr}`;
+             return "";
+        }).filter(s => s).join('\n');
+    }
+    
+    return String(val);
+};
+
 // UNIVERSAL RETRY WRAPPER FOR API CALLS
 const callGeminiWithRetry = async <T>(
   apiCall: () => Promise<T>,
@@ -267,7 +292,17 @@ export const generateSlideDeckPrompts = async (topic: string, slideCount: number
             config: { systemInstruction, responseMimeType: "application/json" }
         });
         const data = cleanAndParseJSON(response.text, []);
-        return Array.isArray(data) ? data : [];
+        
+        // Sanitize data to flatten objects to strings
+        const safeData = Array.isArray(data) ? data.map((s: any) => ({
+            ...s,
+            id: Number(s.id) || 0,
+            title: flattenToString(s.title),
+            content: flattenToString(s.content),
+            prompt: flattenToString(s.prompt)
+        })) : [];
+
+        return safeData;
     });
 };
 
@@ -306,7 +341,12 @@ export const transformSlideImageToPrompt = async (base64Image: string): Promise<
             ],
             config: { responseMimeType: "application/json" }
         });
-        return cleanAndParseJSON(response.text, { title: "", content: "", prompt: "" });
+        const result = cleanAndParseJSON(response.text, { title: "", content: "", prompt: "" });
+        return {
+            title: flattenToString(result.title),
+            content: flattenToString(result.content),
+            prompt: flattenToString(result.prompt)
+        };
     });
 };
 
@@ -324,7 +364,17 @@ export const generateTimeBasedSlideDeck = async (script: string, durationMinutes
             }
         });
         const data = cleanAndParseJSON(response.text, []);
-        return Array.isArray(data) ? data : [];
+        
+        // Sanitize
+        const safeData = Array.isArray(data) ? data.map((s: any) => ({
+            ...s,
+            id: Number(s.id) || 0,
+            title: flattenToString(s.title),
+            content: flattenToString(s.content),
+            prompt: flattenToString(s.prompt)
+        })) : [];
+
+        return safeData;
     });
 };
 

@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Wand2, Sparkles, Edit3, Smartphone, Monitor, Square, Layout, Youtube, ShieldPlus, Upload, X, Palette, Facebook, Video, MessageCircle, ImagePlus, Type, User, CircleStop, Subtitles } from 'lucide-react';
 import { AspectRatioType, GenerationMode } from '../types';
@@ -74,11 +75,14 @@ export const PromptDisplay: React.FC<PromptDisplayProps> = ({
     { value: '4:3', label: 'Ngang', icon: <Layout className="w-4 h-4" />, desc: 'TV' },
   ];
 
+  // REMOVED 'white' option to comply with strict visibility rule.
+  // ADDED 'red' and 'purple' for variety.
   const colors = [
-    { value: 'white', label: 'Trắng', class: 'bg-white text-slate-800 border-slate-200' },
-    { value: 'black', label: 'Đen', class: 'bg-black text-white border-slate-800' },
     { value: 'gold', label: 'Vàng Kim', class: 'bg-yellow-400 text-yellow-900 border-yellow-500' },
+    { value: 'black', label: 'Đen Đậm', class: 'bg-black text-white border-slate-800' },
     { value: 'navy', label: 'Xanh Đậm', class: 'bg-blue-900 text-white border-blue-950' },
+    { value: 'red', label: 'Đỏ', class: 'bg-red-600 text-white border-red-800' },
+    { value: 'purple', label: 'Tím', class: 'bg-purple-600 text-white border-purple-800' },
   ];
 
   return (
@@ -168,12 +172,12 @@ export const PromptDisplay: React.FC<PromptDisplayProps> = ({
              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block flex items-center gap-2">
                <Type className="w-3 h-3" /> Màu Tiêu Đề
              </label>
-             <div className="flex gap-2">
+             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
                {colors.map((c) => (
                   <button 
                     key={c.value}
                     onClick={() => onTitleColorChange(c.value)}
-                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold border transition-all shadow-sm flex items-center justify-center gap-1 ${c.class}
+                    className={`flex-1 min-w-[60px] py-1.5 rounded-lg text-[10px] font-bold border transition-all shadow-sm flex items-center justify-center gap-1 ${c.class}
                       ${titleColor === c.value ? 'ring-2 ring-cyan-400 ring-offset-1 scale-105 z-10' : 'opacity-70 hover:opacity-100'}
                     `}
                   >
@@ -188,12 +192,12 @@ export const PromptDisplay: React.FC<PromptDisplayProps> = ({
              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block flex items-center gap-2">
                <Palette className="w-3 h-3" /> Màu Nội Dung
              </label>
-             <div className="flex gap-2">
+             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
                {colors.map((c) => (
                   <button 
                     key={c.value}
                     onClick={() => onBodyColorChange(c.value)}
-                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold border transition-all shadow-sm flex items-center justify-center gap-1 ${c.class}
+                    className={`flex-1 min-w-[60px] py-1.5 rounded-lg text-[10px] font-bold border transition-all shadow-sm flex items-center justify-center gap-1 ${c.class}
                       ${bodyColor === c.value ? 'ring-2 ring-cyan-400 ring-offset-1 scale-105 z-10' : 'opacity-70 hover:opacity-100'}
                     `}
                   >
